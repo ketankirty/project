@@ -1,5 +1,5 @@
 // API configuration and utility functions
-const API_BASE_URL = import.meta.env.VITE_API_URL || '/api';
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000/api';
 
 // API utility class
 class ApiClient {
@@ -86,12 +86,11 @@ export const apiClient = new ApiClient();
 
 // Auth API methods
 export const authAPI = {
-  register: (userData) => apiClient.post('/auth/register', userData),
+  signup: (userData) => apiClient.post('/auth/signup', userData),
   login: (credentials) => apiClient.post('/auth/login', credentials),
+  forgotPassword: (email) => apiClient.post('/auth/forgot-password', email),
+  resetPassword: (data) => apiClient.post('/auth/reset-password', data),
   getProfile: () => apiClient.get('/auth/me'),
-  updateProfile: (userData) => apiClient.put('/auth/profile', userData),
-  changePassword: (passwordData) => apiClient.put('/auth/change-password', passwordData),
-  logout: () => apiClient.post('/auth/logout'),
 };
 
 // Booking API methods

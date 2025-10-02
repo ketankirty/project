@@ -34,9 +34,9 @@ const AuthModal = ({ isOpen, onClose, initialMode = 'login' }) => {
         {/* Body */}
         <div className="p-6">
           {mode === 'login' ? (
-            <LoginForm onClose={onClose} />
+            <LoginForm onClose={onClose} onSwitchToSignup={() => setMode('signup')} />
           ) : (
-            <SignupForm onClose={onClose} />
+            <SignupForm onClose={onClose} onSwitchToLogin={() => setMode('login')} />
           )}
 
           {/* Footer Toggle */}

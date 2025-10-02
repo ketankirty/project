@@ -2,8 +2,8 @@ const express = require("express")
 const cors = require("cors")
 const dotenv = require("dotenv")
 const mongoose = require("mongoose")
+const authRoutes = require('./routes/authRoutes');
 const enquiryRoute = require('./routes/enquiryRoute');
-const signupRoutes = require('./routes/singnupRoutes');
 const contactRoute = require('./routes/contactRoute');
 const bookingRoute = require('./routes/bookingRoute');
 
@@ -18,7 +18,7 @@ app.use(express.json());
 //mongodb connection
 const connectDB = async () => {
     try {
-        await mongoose.connect(process.env.MONGO_URL);
+        await mongoose.connect(process.env.MONGO_URL || 'mongodb://localhost:27017/travel-app');
         console.log("✅  Mongodb Connected..");
 
 
@@ -32,8 +32,8 @@ connectDB();
 
 
 //api endpoints
+app.use('/api/auth', authRoutes)
 app.use('/api/enquiryform', enquiryRoute)
-app.use('/api/signup', signupRoutes)
 app.use('/api/ContactUs',contactRoute)
 app.use('/api/checkout',bookingRoute)
 

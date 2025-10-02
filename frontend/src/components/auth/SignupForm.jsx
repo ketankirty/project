@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
 import { User, Mail, Lock, Loader, PhoneCall } from 'lucide-react';
-import axios from 'axios';
+import { useAuth } from '../../context/AuthContext';
 
-const SignupForm = ({ onClose }) => {
+const SignupForm = ({ onClose, onSwitchToLogin }) => {
   const [name, setName] = useState('');
-  const [email, setEmail] = useState('@gmail.com');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [mobilenumber, setMobilenumber] = useState('');
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
+
+  const { signup } = useAuth();
 
   const validateInputs = () => {
     if (!name || !email || !password || !mobilenumber) {
@@ -21,8 +23,8 @@ const SignupForm = ({ onClose }) => {
     if (password.length < 8) {
       return 'Password must be at least 8 characters long.';
     }
-    if (!/^\+?\d{10,15}$/.test(mobilenumber)) {
-      return 'Please enter a valid mobile number.';
+    if (!/^\d{10}$/.test(mobilenumber)) {
+      return 'Please enter a valid 10-digit mobile number.';
     }
     return null;
   };
@@ -41,27 +43,25 @@ const SignupForm = ({ onClose }) => {
     setLoading(true);
 
     try {
-      const response = await axios.post('http://localhost:8000/api/signup/CreateAccount', {
-        name,
-        email,
-        password,
-        mobilenumber,
-      });
+      const isSuccess = await signup(name, email, password, mobilenumber);
 
-      console.log('Account created:', response.data);
-      setSuccess('Your account has been created successfully!');
-      setName('');
-      setEmail('');
-      setPassword('');
-      setMobilenumber('');
+      if (isSuccess) {
+        setSuccess('Account created successfully! Please login.');
+        setName('');
+        setEmail('');
+        setPassword('');
+        setMobilenumber('');
 
-      setTimeout(() => {
-        setLoading(false);
-        if (onClose) onClose(); // close modal automatically after signup
-      }, 1500);
+        setTimeout(() => {
+          setLoading(false);
+          if (onSwitchToLogin) {
+            onSwitchToLogin();
+          }
+        }, 2000);
+      }
     } catch (err) {
       console.error(err);
-      setError(err.response?.data?.message || 'Something went wrong.');
+      setError(err.response?.data?.message || err.message || 'Something went wrong.');
       setLoading(false);
     }
   };

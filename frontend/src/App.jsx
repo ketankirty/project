@@ -9,6 +9,7 @@ import AboutPage from './pages/AboutPage';
 import ContactPage from './pages/ContactPage';
 import NewsPage from './pages/NewsPage';
 import BookingPage from './pages/BookingPage';
+import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import AuthProvider from './context/AuthContext';
 import ChatBot from './components/chat/ChatBot';
 import { Toaster } from "react-hot-toast";
@@ -27,6 +28,7 @@ function App() {
             <Route path="/about" element={<AboutPage />} />
             <Route path="/contact" element={<ContactPage />} />
             <Route path="/news" element={<NewsPage />} />
+            <Route path="/forgot-password" element={<ForgotPasswordPage />} />
           </Routes>
           <Toaster position="top-right" reverseOrder={false} />
         </main>
